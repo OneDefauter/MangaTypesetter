@@ -1,0 +1,2 @@
+# MangaTypesetter
+Editor de manga
