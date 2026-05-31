@@ -2,7 +2,7 @@
 
 OCR extrai texto visível de uma área ou `TextLayer`.
 
-[Automação OCR](../imagens/AutomaçãoOCR.png)
+![Automação OCR](../imagens/AutomaçãoOCR.png)
 
 ## Aba Automação
 

@@ -2,7 +2,7 @@
 
 Este é o fluxo recomendado para preparar uma página.
 
-[Comparação](../imagens/comparacao.png)
+![Comparação](../imagens/comparacao.png)
 
 ## 1. Criar ou Abrir Projeto
 

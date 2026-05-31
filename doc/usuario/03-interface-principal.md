@@ -2,7 +2,7 @@
 
 A interface principal é organizada em menus superiores, canvas central, painéis laterais e painéis flutuantes opcionais.
 
-[Áreas marcadas](../imagens/MangaTypesetter.png)
+![Áreas marcadas](../imagens/MangaTypesetter.png)
 
 ## Áreas Principais
 
@@ -30,7 +30,7 @@ Uso:
 * navegar pelo capítulo;
 * conferir ordem das páginas.
 
-[Páginas](../imagens/Páginas.png)
+![Páginas](../imagens/Páginas.png)
 
 ### Canvas
 
@@ -52,7 +52,7 @@ Permite:
 * reordenar;
 * remover.
 
-[Layers](../imagens/Layers.png)
+![Layers](../imagens/Layers.png)
 
 ### Painel Propriedades / Automação
 
@@ -70,7 +70,7 @@ Painéis atuais:
 * `Menu Info`: navegação rápida de páginas.
 * `Menu texto`: edição compacta de aparência de texto.
 
-[UI](../imagens/UI.png)
+![UI](../imagens/UI.png)
 
 ## Barra de Status
 

@@ -2,7 +2,7 @@
 
 Layers são os elementos editáveis de uma página.
 
-[Layers](../imagens/Layers.png)
+![Layers](../imagens/Layers.png)
 
 ## Tipos de Layer
 
@@ -89,7 +89,7 @@ O painel `Propriedades` muda conforme a layer selecionada.
 
 Use para editar conteúdo e aparência do texto.
 
-[Propriedades de uma textlayer selecionada](../imagens/Propriedades.png)
+![Propriedades de uma textlayer selecionada](../imagens/Propriedades.png)
 
 ### MaskLayer
 

@@ -2,7 +2,7 @@
 
 O MangaTypesetter trabalha com uma pasta de projeto. Dentro dela ficam os arquivos do projeto, imagens originais, assets gerados, exportações, cache e dados auxiliares.
 
-[Esquema do projeto](../imagens/EsquemaProjeto.png)
+![Esquema do projeto](../imagens/EsquemaProjeto.png)
 
 ## Estrutura Padrão
 

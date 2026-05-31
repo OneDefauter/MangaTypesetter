@@ -2,7 +2,7 @@
 
 O canvas é a área de edição visual das páginas.
 
-[Canvas e textleyer selecionada](../imagens/CanvasTextlayer.png)
+![Canvas e textleyer selecionada](../imagens/CanvasTextlayer.png)
 
 ## Modos de Canvas
 
@@ -78,7 +78,7 @@ Seleciona regiões semelhantes por cor.
 
 No modo Contínuo, pode selecionar áreas cross-page quando a seleção toca a borda superior ou inferior de uma página.
 
-[Cross-page em duas páginas](../imagens/VarinhaMágicaContínuo.png)
+![Cross-page em duas páginas](../imagens/VarinhaMágicaContínuo.png)
 
 ### Mão/Pan
 

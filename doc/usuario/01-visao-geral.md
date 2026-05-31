@@ -4,7 +4,7 @@ O MangaTypesetter é um editor desktop feito em C++/Qt para preparar páginas de
 
 Ele organiza o trabalho em projetos próprios, com páginas importadas, layers de texto, máscaras, repintura, OCR, tradução e exportação final.
 
-[Projeto aberto](../imagens/PrincipalProjetoAberto.png)
+![Projeto aberto](../imagens/PrincipalProjetoAberto.png)
 
 ## Objetivo do App
 

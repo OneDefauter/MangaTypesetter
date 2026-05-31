@@ -2,7 +2,7 @@
 
 A janela de Configurações organiza preferências gerais, APIs, templates, atalhos, exportação, OCR, detecção e extensões.
 
-[Configurações](../imagens/Configurações.png)
+![Configurações](../imagens/Configurações.png)
 
 ## Geral
 
@@ -28,7 +28,7 @@ Gerencia APIs de:
 
 Também permite importar workflow ComfyUI.
 
-[Configurações > API](../imagens/ConfiguraçõesComfyUI.png)
+![Configurações > API](../imagens/ConfiguraçõesComfyUI.png)
 
 ## Template
 

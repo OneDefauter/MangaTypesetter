@@ -2,7 +2,7 @@
 
 O modo Contínuo permite trabalhar com páginas em sequência, sem depender de uma página isolada.
 
-[Canvas no modo Contínuo](../imagens/Cross-pageContínuos.png)
+![Canvas no modo Contínuo](../imagens/Cross-pageContínuos.png)
 
 ## Quando Usar
 
