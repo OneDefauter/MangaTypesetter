@@ -1,28 +1,36 @@
 # MangaTypesetter
 
-MangaTypesetter é um editor desktop voltado para tradução, limpeza, redesenho e typesetting de páginas de mangá, webtoon e manhua.
+MangaTypesetter é um editor desktop em desenvolvimento para tradução, limpeza, redesenho e typesetting de páginas de mangá, webtoon e manhua.
 
-A ideia do aplicativo é reunir em um único fluxo as etapas mais comuns de preparação de capítulos: importar páginas, detectar áreas de fala, executar OCR, revisar texto, gerar máscaras, limpar ou repintar balões, aplicar o texto traduzido e exportar o resultado final.
+A proposta do aplicativo é reunir em um único fluxo as etapas mais comuns de preparação de capítulos: importar páginas, detectar balões ou áreas de fala, executar OCR, revisar/traduzir textos, gerar máscaras, limpar ou repintar regiões da imagem, aplicar o texto traduzido e exportar o resultado final.
 
-O projeto ainda está em desenvolvimento ativo. Algumas funções já fazem parte do fluxo principal, enquanto outras ainda são experimentais ou estão em evolução.
+> Status: em desenvolvimento ativo. A base do editor já existe, mas várias funções avançadas ainda estão em validação ou consolidação.
+
+---
+
+## Wiki
+
+Para acessar a Wiki é [aqui](./doc/README.md)
 
 ## Objetivo
 
-O MangaTypesetter foi pensado para facilitar o trabalho de edição e tradução de capítulos completos, evitando que cada página precise ser tratada como uma imagem isolada.
+O MangaTypesetter foi pensado para facilitar o trabalho de edição de capítulos completos, evitando que cada página precise ser tratada como uma imagem isolada.
 
-O aplicativo trabalha com um projeto de capítulo, mantendo páginas, textos, máscaras, repinturas, estilos e informações de tradução organizados em um único fluxo.
+O aplicativo trabalha com um projeto de capítulo, mantendo imagens originais, páginas, camadas, textos, máscaras, repinturas, configurações de OCR/tradução e arquivos exportados organizados em uma estrutura própria.
 
 Principais objetivos:
 
 - importar e organizar páginas de mangá, webtoon e manhua;
-- detectar balões e áreas de fala;
 - criar áreas de texto manualmente;
-- executar OCR em áreas selecionadas ou páginas inteiras;
-- gerar máscaras para limpeza de texto;
-- usar inpainting/repintura para remover texto original;
+- detectar balões e áreas de fala automaticamente;
+- executar OCR em páginas, áreas selecionadas ou camadas de texto;
+- gerar máscaras para limpeza do texto original;
+- usar inpainting/repintura para reconstruir regiões apagadas;
 - aplicar texto traduzido com controle de estilo;
-- revisar a ordem de leitura dos balões;
+- revisar a ordem de leitura;
 - exportar páginas ou capítulos finalizados.
+
+---
 
 ## Fluxo principal
 
@@ -31,15 +39,15 @@ O fluxo esperado para uma página é:
 1. Importar as páginas do capítulo.
 2. Detectar balões automaticamente ou criar áreas de texto manualmente.
 3. Criar uma camada de texto para cada fala ou área detectada.
-4. Gerar máscara para a região do texto original.
-5. Aplicar limpeza ou inpainting na área mascarada.
-6. Rodar OCR quando necessário.
-7. Revisar o texto original, a tradução e o texto aplicado.
-8. Ajustar fonte, tamanho, cor, contorno, alinhamento, posição e rotação.
-9. Organizar a ordem de leitura.
+4. Executar OCR quando necessário.
+5. Revisar o texto original/OCR.
+6. Traduzir ou importar a tradução.
+7. Gerar máscara para a região do texto original.
+8. Aplicar limpeza ou inpainting na área mascarada.
+9. Ajustar fonte, tamanho, cor, contorno, alinhamento, posição, rotação e ordem de leitura.
 10. Exportar a página ou o capítulo finalizado.
 
-As relações principais do fluxo são:
+Relação básica entre camadas:
 
 ```text
 TextLayer
@@ -47,21 +55,20 @@ TextLayer
 └─ InpaintLayer
 ```
 
-Também há suporte inicial a grupos de mesclagem, onde dois ou mais textos continuam separados para OCR, tradução e ordem de leitura, mas compartilham uma mesma máscara e uma mesma repintura.
+Também há suporte a grupos de mesclagem, onde duas ou mais camadas de texto continuam independentes para OCR, tradução e ordem de leitura, mas podem compartilhar máscara e repintura quando suas regiões se encostam visualmente.
 
 ```text
 TextLayer A ┐
-            ├─ Grupo de mesclagem
 TextLayer B ┘
-              ├─ Máscara mesclada
-              └─ Repintura mesclada
+├─ Máscara mesclada
+└─ Repintura mesclada
 ```
 
-Esse fluxo é útil quando duas falas estão próximas ou quando as máscaras se encostam visualmente, mas os textos ainda precisam continuar independentes.
+---
 
 ## Estrutura de projeto
 
-Novos projetos usam uma estrutura própria do MangaTypesetter:
+Novos projetos usam uma estrutura própria:
 
 ```text
 MeuProjeto/
@@ -76,11 +83,11 @@ MeuProjeto/
 └─ cache/
 ```
 
-O arquivo `.mtp` guarda informações gerais do projeto, como metadados, template, idiomas, modo de leitura e referência para o capítulo.
+O arquivo `.mtp` guarda informações gerais do projeto, como nome, obra, capítulo, idiomas, template, modo de leitura e caminho do capítulo.
 
 O arquivo `.mtchapter` guarda páginas, camadas, vínculos entre texto/máscara/repintura, grupos de mesclagem, campos de OCR/tradução e a última página aberta.
 
-Os arquivos usam extensões próprias do MangaTypesetter para facilitar a organização do projeto.
+---
 
 ## Recursos implementados
 
@@ -88,13 +95,14 @@ Os arquivos usam extensões próprias do MangaTypesetter para facilitar a organi
 
 - Criação de novo projeto.
 - Abertura e salvamento de projeto.
-- Recuperação básica por autosave.
 - Importação de imagens.
 - Organização de páginas com ordenação natural.
 - Lista lateral de páginas com miniaturas.
 - Suporte a capítulos com múltiplas páginas.
+- Autosave básico.
+- Templates iniciais para diferentes fluxos de leitura.
 
-Formatos de imagem suportados no fluxo principal:
+Formatos de imagem usados no fluxo principal:
 
 ```text
 png, jpg, jpeg, webp, bmp, tif, tiff
@@ -102,13 +110,17 @@ png, jpg, jpeg, webp, bmp, tif, tiff
 
 ### Canvas e navegação
 
-- Canvas visual para edição de páginas.
+- Canvas visual para edição de página.
+- Modo paginado.
+- Modo contínuo para capítulos/webtoons.
 - Zoom.
 - Pan.
 - Ajuste à tela.
+- Visualização em tamanho real.
 - Seleção de camadas no canvas.
-- Movimento e redimensionamento básico de áreas de texto.
-- Movimento de camada selecionada com as setas do teclado.
+- Movimento e redimensionamento básico de camadas de texto.
+- Movimento da camada selecionada com as setas do teclado.
+- Painéis flutuantes para controle e texto.
 
 ### Camadas
 
@@ -125,7 +137,7 @@ O painel de camadas permite:
 - selecionar camadas;
 - alternar visibilidade;
 - bloquear edição;
-- organizar ordem/profundidade;
+- organizar profundidade/ordem;
 - remover camadas;
 - trabalhar com relações entre texto, máscara e repintura.
 
@@ -142,18 +154,20 @@ Recursos de estilo disponíveis:
 - fonte;
 - tamanho;
 - cor;
-- alinhamento;
+- alinhamento horizontal;
+- alinhamento vertical;
 - opacidade;
 - margens;
 - auto size;
 - negrito;
 - itálico;
-- stroke/contorno;
-- múltiplos strokes;
 - rotação;
 - posição;
 - tamanho da caixa de texto;
-- ordem de leitura.
+- ordem de leitura;
+- stroke/contorno;
+- múltiplos strokes;
+- gradiente em stroke.
 
 Também há suporte a estilos padrão por template, permitindo que novas camadas de texto já nasçam com uma aparência configurada.
 
@@ -173,11 +187,11 @@ Ferramentas disponíveis ou em estágio inicial:
 - varinha mágica;
 - transformação básica.
 
-A varinha mágica permite selecionar regiões conectadas por similaridade de cor, o que pode ajudar na seleção de balões, fundos planos e áreas brancas.
+A varinha mágica permite selecionar regiões conectadas por similaridade de cor, ajudando em balões brancos, fundos planos e regiões de limpeza.
 
 ### Detecção, OCR, máscara e repintura
 
-O MangaTypesetter possui integrações locais para auxiliar o fluxo de edição:
+O MangaTypesetter possui integração com serviços locais em Python/FastAPI para auxiliar o fluxo de edição:
 
 - detecção de balões e áreas de fala;
 - OCR local;
@@ -186,22 +200,73 @@ O MangaTypesetter possui integrações locais para auxiliar o fluxo de edição:
 - criação automática do fluxo `TextLayer -> MaskLayer -> InpaintLayer` após detecção;
 - regeneração de máscaras;
 - mesclagem manual de máscaras entre textos;
-- configuração inicial de mesclagem automática de máscaras.
+- configuração inicial de mesclagem automática de máscaras;
+- suporte a regiões que cruzam páginas no modo contínuo.
+
+Serviços locais incluídos no projeto:
+
+```text
+resources/Python/ComicSpeechBubbleDetector  -> /detect
+resources/Python/PaddleOCR                  -> /ocr
+resources/Python/MangaOCR                   -> /ocr
+resources/Python/OpenCV                     -> /mask
+resources/Python/IOPaint                    -> /inpaint
+```
 
 As máscaras ficam ocultas por padrão, pois normalmente são usadas apenas como apoio para limpeza e repintura.
 
-### Tradução e glossário
+### Tradução, glossário e APIs
 
 O app possui recursos voltados para revisão e tradução:
 
 - janela de tradução;
-- exportação e importação de texto em TXT/JSON;
+- campos separados para OCR, tradução e texto aplicado;
+- organização de ordem de leitura;
+- exportação/importação de textos;
 - glossário próprio;
 - importação/exportação de glossário;
-- organização de ordem de leitura;
-- campos separados para OCR, tradução e texto final aplicado.
+- presets de provedores de API;
+- configuração genérica de provedores sem recompilar o aplicativo.
 
-Esses recursos ajudam a manter o texto bruto, o texto revisado e o texto final separados durante o processo de edição.
+Provedores previstos/configuráveis incluem:
+
+- OpenAI/ChatGPT;
+- Gemini;
+- Google Translate;
+- DeepL;
+- LM Studio local;
+- MangaOCR;
+- PaddleOCR;
+- IOPaint;
+- OpenCV Mask;
+- Comic Speech Bubble Detector;
+- ComfyUI.
+
+### Configurações
+
+A janela de configurações possui categorias para organizar o comportamento do aplicativo:
+
+- Geral;
+- API;
+- Template;
+- Atalhos;
+- Exportar;
+- Máscara e Repintura;
+- OCR;
+- Detecção;
+- Extensões;
+- Sobre.
+
+Também há configuração de:
+
+- atalhos;
+- provedores de API;
+- templates;
+- estilos de texto;
+- exportação;
+- máscara e inpainting;
+- extensões Python;
+- painéis flutuantes.
 
 ### Exportação
 
@@ -210,68 +275,141 @@ Recursos de exportação disponíveis:
 - exportar página atual;
 - exportar capítulo;
 - renderizar imagem original, limpeza, repintura e texto final;
-- ignorar máscaras auxiliares no resultado final.
+- ignorar máscaras auxiliares no resultado final;
+- exportação assíncrona com progresso.
+
+---
 
 ## Atalhos principais
 
-- `V`: ferramenta de seleção
-- `T`: ferramenta de texto
-- `C`: limpeza retangular
-- `Espaço`: pan temporário
-- `Ctrl+S`: salvar
-- `Ctrl+0`: ajustar zoom
-- `Ctrl+Scroll`: zoom
-- `Delete`: remover camada selecionada
-- `Ctrl+Z`: desfazer
-- `Ctrl+Y` / `Ctrl+Shift+Z`: refazer
-- Setas: mover camada de texto selecionada
-- `Shift + Setas`: mover camada de texto com passo maior
+| Atalho | Ação |
+|---|---|
+| `V` | Ferramenta de seleção |
+| `T` | Ferramenta de texto |
+| `C` | Limpeza retangular |
+| `Espaço` | Pan temporário |
+| `Ctrl+S` | Salvar projeto |
+| `Ctrl+0` | Ajustar à tela |
+| `Ctrl+1` | Tamanho real |
+| `Ctrl+Scroll` | Zoom |
+| `Delete` | Remover camada selecionada |
+| `Ctrl+Z` | Desfazer |
+| `Ctrl+Y` / `Ctrl+Shift+Z` | Refazer |
+| `Setas` | Mover camada selecionada |
+| `Shift + Setas` | Mover camada com passo maior |
+
+---
 
 ## Estado atual
 
-O MangaTypesetter já possui uma base funcional para trabalhar com projetos, páginas, camadas, texto, máscaras, OCR, detecção e repintura.
+O MangaTypesetter já possui uma base funcional para:
 
-O fluxo principal de detecção, criação de texto, geração de máscara e inpainting já existe, mas ainda precisa ser validado em mais páginas reais e em capítulos maiores.
+- criar e abrir projetos;
+- importar páginas;
+- editar páginas em canvas;
+- trabalhar com camadas;
+- criar e editar textos;
+- aplicar estilos de typesetting;
+- usar ferramentas básicas de seleção;
+- gerar máscaras;
+- integrar OCR, detecção e inpainting local;
+- exportar página ou capítulo;
+- configurar APIs, templates, atalhos e extensões.
 
-Algumas áreas ainda estão em consolidação:
+O app já passou da fase de protótipo conceitual. Ele ainda não está, porém, no nível de um editor finalizado como ImageTrans/Photoshop.
 
-- mesclagem automática de máscaras;
+Áreas que ainda precisam de validação ou evolução:
+
+- estabilidade do fluxo completo em capítulos grandes;
+- detecção automática em diferentes tipos de mangá, manhua e webtoon;
+- qualidade das máscaras em cenários difíceis;
+- inpainting em textos sobre arte complexa;
 - edição direta de texto no canvas;
-- ferramentas avançadas de transformação;
-- exportação avançada;
+- ferramentas manuais mais próximas de editores como Photoshop;
+- transformação avançada/perspectiva;
+- pincel e borracha para máscara;
 - tradução em lote com contexto;
-- desempenho em capítulos muito grandes ou webtoons longos;
-- ferramentas manuais mais próximas de editores como Photoshop.
+- revisão em lote;
+- exportação avançada;
+- desempenho em webtoons muito longos.
+
+---
 
 ## Limitações conhecidas
 
 - A mesclagem automática de máscaras ainda é experimental.
-- Alguns fluxos de tradução e importação/exportação de texto ainda precisam de mais testes em projetos grandes.
+- A qualidade da detecção depende muito do tipo de página e do modelo usado.
+- OCR e tradução ainda precisam de revisão humana.
 - A edição direta de texto no canvas ainda não está finalizada.
-- Ferramentas avançadas como transformação por perspectiva, distorção, carimbo, pincel de máscara e edição manual refinada ainda fazem parte dos planos futuros.
-- O suporte a capítulos muito longos precisa de otimizações adicionais de carregamento, cache e visualização contínua.
+- Ferramentas como carimbo, pincel de máscara, transformação por perspectiva e distorção ainda fazem parte dos planos futuros.
+- O suporte a capítulos muito longos precisa de otimizações adicionais de carregamento, cache e renderização virtualizada.
+- Algumas integrações externas exigem configuração local, modelos baixados ou chaves de API.
 
-## Ideias futuras
+---
 
-Recursos planejados ou desejados para versões futuras:
+## Roadmap sugerido
 
-- visualização contínua do capítulo, com páginas uma abaixo da outra;
-- renderização virtualizada para capítulos grandes e webtoons;
-- edição direta do texto no canvas;
-- normalização de OCR para corrigir palavras quebradas por hífen;
-- criação de máscaras a partir de seleções manuais;
-- editor de máscara com pincel e borracha;
-- transformação avançada de texto e camadas;
-- suporte melhor a SFX;
-- exportação com presets de qualidade e nomenclatura;
-- exportação para formatos de pacote de capítulo;
-- revisão em lote de OCR e tradução;
-- glossário mais avançado;
-- memória de tradução;
-- presets de estilo por personagem ou tipo de fala.
+### Curto prazo
+
+- Consolidar o fluxo manual: criar texto, limpar, aplicar estilo e exportar.
+- Melhorar estabilidade de salvamento/carregamento.
+- Refinar seleção, varinha mágica e limpeza retangular.
+- Melhorar painel de propriedades e edição de texto.
+- Validar exportação de capítulos completos.
+
+### Médio prazo
+
+- Melhorar OCR por camada, página e capítulo.
+- Refinar detecção automática de balões.
+- Melhorar geração e edição de máscaras.
+- Adicionar pincel/borracha de máscara.
+- Melhorar integração com IOPaint.
+- Aprimorar modo contínuo para webtoons.
+- Melhorar tradução em lote e revisão com glossário.
+
+### Longo prazo
+
+- Suporte melhor a SFX.
+- Transformação avançada de texto e camadas.
+- Presets por personagem ou tipo de fala.
+- Memória de tradução.
+- Revisão em lote com status por página/balão.
+- Exportação para pacotes de capítulo.
+- Exportação avançada com presets de qualidade.
+- Renderização virtualizada para capítulos muito grandes.
+- Sistema de plugins/extensões mais completo.
+
+---
+
+## Stack
+
+O projeto usa C++ com Qt para a aplicação desktop principal.
+
+Serviços auxiliares de IA/OCR/processamento podem ser executados localmente com Python/FastAPI, mantendo o app principal como editor desktop nativo.
+
+Estrutura geral:
+
+```text
+C++ / Qt
+├─ Interface desktop
+├─ Canvas
+├─ Sistema de projeto
+├─ Sistema de camadas
+├─ Typesetting
+├─ Exportação
+└─ Integração com serviços locais
+
+Python / FastAPI
+├─ Detecção de balões
+├─ OCR
+├─ Geração de máscara
+└─ Inpainting
+```
+
+---
 
 ## Status do projeto
 
 MangaTypesetter está em desenvolvimento ativo.
 
-A documentação deste repositório descreve o conceito, os recursos e o estado atual do aplicativo. O código-fonte principal é privado.
+A documentação descreve o conceito, os recursos implementados e o estado atual do aplicativo. Alguns recursos citados ainda são experimentais e podem mudar conforme o fluxo de edição for testado em capítulos reais.
